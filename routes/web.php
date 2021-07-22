@@ -17,6 +17,7 @@ Route::get('/', function () {return view('pages/home');});
 
 //Clients
 Route::prefix('clients')->group(function () {
-    Route::get('/', [App\Http\Controllers\ClientController::class, 'home']);
+    Route::get('/', [App\Http\Controllers\ClientController::class, 'home'])->name('clients');
+    Route::post('/new', [App\Http\Controllers\ClientController::class, 'new']);
     
 });
