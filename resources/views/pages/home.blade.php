@@ -10,8 +10,11 @@ Dashboard
 
 @section('content')
 <div class="row mb-3">
-    <div class="col-12">
+    <div class="col-8">
         <h4>Select a date range to see the latest payment of each client:</h4>
+    </div>
+    <div class="col-4 text-end">
+        <a href="/payments/export" class="btn btn-success">Export payments</a>
     </div>
 </div>
 <div class="row">

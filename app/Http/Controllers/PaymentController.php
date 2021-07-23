@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Payment;
 use App\Models\Client;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PaymentsExport;
 use Artisan;
 
 class PaymentController extends Controller
@@ -25,8 +27,6 @@ class PaymentController extends Controller
     //Show all Payments
      public function home()
      {
-
-       return Artisan::call('payments:csv');
 
        $payments = Payment::with('client')->paginate(5);  
       
@@ -109,7 +109,6 @@ class PaymentController extends Controller
     }
 
     //Latest Payments
-
     public function latestPayments(Request $request)
     {
        if(empty($request->startDate) || empty($request->endDate)){
@@ -134,6 +133,10 @@ class PaymentController extends Controller
        return view('pages/payments/latest', compact('records','startDate','endDate'));
     }
    
-
+    //Export to csv
+    public function export() 
+    {
+        return Excel::download(new PaymentsExport, 'users.csv');
+    }
     
 }

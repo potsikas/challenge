@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use Illuminate\Support\Collection;
 
 class Payment extends Model
 {
@@ -33,9 +34,20 @@ class Payment extends Model
     //Latest 30 days Payments
     static function getLast30Days($date)
     {
-      return Payment::whereDate('created_at','>=',$date)->orderByDesc('created_at')->get()->unique('user_id');
+      $collection = new Collection;      
+
+      $data=Payment::whereDate('created_at','>=',$date)->orderByDesc('created_at')->get()->unique('user_id');
+      
+      foreach($data as $payment){
+        $collection->push([
+          'name'=> $payment->client->name,
+          'surname'=> $payment->client->surname,
+          'amount'=> $payment->amount,
+          'date'=> $payment->created_at
+        ]); 
+      }
+      return $collection;;
     }
-    
 
 }
 

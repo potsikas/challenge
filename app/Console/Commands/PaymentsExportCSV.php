@@ -45,20 +45,18 @@ class PaymentsExportCSV extends Command
         $date=Carbon::now();
         $date->subDays(30);
         
-        $name = 'last_30_days_payments'.time().'.csv';
-        Storage::disk('csv')->put($name, '','public');
-        $handle = fopen($_SERVER['DOCUMENT_ROOT'].'/csv/'.$name, 'w');
+        $name = 'last_30_days_payments_'.time().'.csv';
+        $handle = fopen(public_path().'/csv/'.$name, 'w');
         //Get Data
         $data=Payment::getLast30Days($date);
         foreach($data as $payment){
-            fputcsv($handle, array($payment->client->name,$payment->client->surname,$payment->amount,$payment->created_at));
+            fputcsv($handle, array($payment['name'],$payment['surname'],$payment['amount'],$payment['date']));
         }
         fclose($handle);
         $headers = array(
-            'Content-Type' => 'text/csv'
-            
+            'Content-Type' => 'text/csv',
         );
-         response()->download($_SERVER['DOCUMENT_ROOT'].'/csv/'.$name, $name, $headers);
-
+        response()->download(public_path().'/csv/'.$name, $name, $headers);
+        echo 'File '.$name.' created at public/csv ! ';
     }
 }

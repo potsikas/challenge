@@ -30,5 +30,6 @@ Route::prefix('payments')->group(function () {
     Route::post('/edit/{id}', [App\Http\Controllers\PaymentController::class, 'edit']);
     Route::post('/delete/{id}', [App\Http\Controllers\PaymentController::class, 'delete']);
     Route::post('/latest', [App\Http\Controllers\PaymentController::class, 'latestPayments']);
+    Route::get('/export', [App\Http\Controllers\PaymentController::class, 'export']);
 
 });
